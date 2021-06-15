@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./styles.css";
+import AddTask from "../src/components/AddTask";
 
 export default function App() {
   interface Provider {
@@ -16,9 +17,10 @@ export default function App() {
     setTask((task) => [...task, { name: taskname, status: "none" }]);
   };
 
-  const deleteTask = (tasks: string) => {
-    const result = task.filter((task) => task.name !== tasks);
-    setTask(result);
+  const deleteTask = (index: number) => {
+    const newArray = [...task];
+    newArray.splice(index, 1);
+    setTask(newArray);
   };
   const inputTask = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskname(event.target.value);
@@ -28,8 +30,9 @@ export default function App() {
       <h1>To Do App</h1>
       <ol style={{ marginTop: 30, display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex" }}>
-          <input placeholder="Enter task" onChange={inputTask}></input>
-          <button onClick={addTask}>Add task</button>
+          {/* <input placeholder="Enter task" onChange={inputTask}></input> */}
+          <AddTask addTask={addTask} inputTask={inputTask} status={status} />
+          {/* <button onClick={addTask}>Add task</button> */}
         </div>
       </ol>
 
@@ -45,7 +48,7 @@ export default function App() {
               }}
             >
               <p>{item.name}</p>
-              <button onClick={() => deleteTask(item.name)}>Delete Task</button>
+              <button onClick={() => deleteTask(index)}>Delete Task</button>
             </li>
           );
         })}
